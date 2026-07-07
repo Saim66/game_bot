@@ -39,4 +39,4 @@ if __name__ == "__main__":
         print("CRITICAL ERROR: TOKEN or ROOM_ID not detected in environment variables.")
     else:
         # Passing [MyBot] as a list, and the SDK handles the rest
-        asyncio.run(__main__.main([MyBot], ROOM_ID, TOKEN))
+       asyncio.run(__main__.main([MyBot]))
