@@ -30,9 +30,12 @@ class MyBot(BaseBot):
         elif cmd == "!guess":
             await self.highrise.chat("Guessing Game: I'm thinking of a number 1-10. Type your guess!")
 
-# This manual entry point ensures Railway runs your code correctly
 if __name__ == "__main__":
+    # DEBUG: This print will show up in your Railway 'Logs' tab
+    print(f"DEBUG Check - Token found: {bool(TOKEN)}")
+    print(f"DEBUG Check - Room ID found: {bool(ROOM_ID)}")
+
     if not TOKEN or not ROOM_ID:
-        print("Error: TOKEN or ROOM_ID not set!")
+        print("CRITICAL ERROR: TOKEN or ROOM_ID not detected in environment variables.")
     else:
         asyncio.run(__main__.main(MyBot, ROOM_ID, TOKEN))
