@@ -1,36 +1,38 @@
 import os
 import random
+import asyncio
 from highrise import BaseBot, __main__
 
-# Credentials are loaded at runtime from Railway's 'Variables' tab
+# Credentials are pulled from your Railway Variables tab
 TOKEN = os.getenv("TOKEN")
 ROOM_ID = os.getenv("ROOM_ID")
 
 class MyBot(BaseBot):
     async def on_start(self, session_metadata) -> None:
-        print("Bot is running!")
+        print("Bot has successfully connected!")
+        await self.highrise.chat("Hello! I am online and ready to play.")
 
     async def on_user_join(self, user, position) -> None:
-        await self.highrise.chat(f"Welcome {user.username}! Type !help to see what I can do.")
+        await self.highrise.chat(f"Welcome {user.username}! Type !help to see my games.")
 
     async def on_chat(self, user, message: str) -> None:
         cmd = message.lower().strip()
 
         if cmd == "!help":
-            await self.highrise.chat("Games: !trivia, !riddle, !guess")
+            await self.highrise.chat("Games available: !trivia, !riddle, !guess")
         
         elif cmd == "!trivia":
             await self.highrise.chat("Trivia: What is the largest planet in our solar system?")
             
         elif cmd == "!riddle":
-            await self.highrise.chat("Riddle: The more of this there is, the less you see. What is it?")
+            await self.highrise.chat("Riddle: I speak without a mouth and hear without ears. What am I?")
             
         elif cmd == "!guess":
-            number = random.randint(1, 10)
-            await self.highrise.chat(f"I'm thinking of a number 1-10. Guess it!")
+            await self.highrise.chat("Guessing Game: I'm thinking of a number 1-10. Type your guess!")
 
-# This tells the SDK how to run the bot
+# This manual entry point ensures Railway runs your code correctly
 if __name__ == "__main__":
-    from highrise import __main__
-    # This keeps the bot alive using your environment variables
-    # You will use the terminal command: python main.py
+    if not TOKEN or not ROOM_ID:
+        print("Error: TOKEN or ROOM_ID not set!")
+    else:
+        asyncio.run(__main__.main(MyBot, ROOM_ID, TOKEN))
