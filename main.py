@@ -3,7 +3,7 @@ import random
 import asyncio
 from highrise import BaseBot, __main__
 
-# Credentials are pulled from your Railway Variables tab
+# Credentials are pulled from your Railway Variables
 TOKEN = os.getenv("TOKEN")
 ROOM_ID = os.getenv("ROOM_ID")
 
@@ -30,12 +30,13 @@ class MyBot(BaseBot):
         elif cmd == "!guess":
             await self.highrise.chat("Guessing Game: I'm thinking of a number 1-10. Type your guess!")
 
+# The execution block with correct list-based structure
 if __name__ == "__main__":
-    # DEBUG: This print will show up in your Railway 'Logs' tab
     print(f"DEBUG Check - Token found: {bool(TOKEN)}")
     print(f"DEBUG Check - Room ID found: {bool(ROOM_ID)}")
 
     if not TOKEN or not ROOM_ID:
         print("CRITICAL ERROR: TOKEN or ROOM_ID not detected in environment variables.")
     else:
-        asyncio.run(__main__.main(MyBot))
+        # Passing [MyBot] as a list, and the SDK handles the rest
+        asyncio.run(__main__.main([MyBot], ROOM_ID, TOKEN))
