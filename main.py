@@ -1,28 +1,21 @@
 import os
+from highrise import BaseBot, __main__
 import asyncio
-from highrise import BaseBot, Highrise
-
-# Credentials
-TOKEN = os.getenv("TOKEN")
-ROOM_ID = os.getenv("ROOM_ID")
 
 class MyBot(BaseBot):
     async def on_start(self, session_metadata) -> None:
-        print("Bot connected successfully!")
+        print("Bot connected!")
         await self.highrise.chat("Hello! I am online.")
 
     async def on_chat(self, user, message: str) -> None:
         if message == "!help":
             await self.highrise.chat("I am working!")
 
-async def main():
-    bot = MyBot()
-    # Direct connection avoids the TypeError from the SDK's main()
-    async with Highrise(TOKEN, ROOM_ID) as h:
-        await h.run(bot)
-
 if __name__ == "__main__":
-    if not TOKEN or not ROOM_ID:
-        print("Error: TOKEN or ROOM_ID missing!")
+    # Ensure variables exist
+    if not os.getenv("TOKEN") or not os.getenv("ROOM_ID"):
+        print("Error: TOKEN or ROOM_ID not found in environment!")
     else:
-        asyncio.run(main())
+        # This is the standard, library-approved way to run the bot.
+        # It internally reads the TOKEN and ROOM_ID variables.
+        asyncio.run(__main__.main([MyBot]))
