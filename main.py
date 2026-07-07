@@ -1,6 +1,11 @@
 import os
-from highrise import BaseBot, __main__
 import asyncio
+from highrise import BaseBot, __main__
+from highrise.models import BotDefinition
+
+# Credentials are pulled from your Railway Variables
+TOKEN = os.getenv("TOKEN")
+ROOM_ID = os.getenv("ROOM_ID")
 
 class MyBot(BaseBot):
     async def on_start(self, session_metadata) -> None:
@@ -11,11 +16,12 @@ class MyBot(BaseBot):
         if message == "!help":
             await self.highrise.chat("I am working!")
 
+# This structure packages the bot correctly for the SDK
+definitions = [BotDefinition(MyBot, ROOM_ID, TOKEN)]
+
 if __name__ == "__main__":
-    # Ensure variables exist
-    if not os.getenv("TOKEN") or not os.getenv("ROOM_ID"):
-        print("Error: TOKEN or ROOM_ID not found in environment!")
+    if not TOKEN or not ROOM_ID:
+        print("CRITICAL ERROR: TOKEN or ROOM_ID not detected.")
     else:
-        # This is the standard, library-approved way to run the bot.
-        # It internally reads the TOKEN and ROOM_ID variables.
-        asyncio.run(__main__.main([MyBot]))
+        # Pass the defined list to the main function
+        asyncio.run(__main__.main(definitions))
