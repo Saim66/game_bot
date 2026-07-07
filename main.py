@@ -2,7 +2,7 @@ import os
 import asyncio
 from highrise import BaseBot, __main__
 
-# Credentials
+# Credentials from Railway Variables
 TOKEN = os.getenv("TOKEN")
 ROOM_ID = os.getenv("ROOM_ID")
 
@@ -19,6 +19,5 @@ if __name__ == "__main__":
     if not TOKEN or not ROOM_ID:
         print("CRITICAL: TOKEN or ROOM_ID missing.")
     else:
-        # Use a list of dictionaries. This is compatible with all SDK versions.
-        bot_list = [{"bot": MyBot(), "room_id": ROOM_ID, "api_token": TOKEN}]
-        asyncio.run(__main__.main(bot_list))
+        # Run the bot using the simplest method possible
+        asyncio.run(__main__.main(MyBot, ROOM_ID, TOKEN))
