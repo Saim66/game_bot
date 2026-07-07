@@ -38,4 +38,4 @@ if __name__ == "__main__":
     if not TOKEN or not ROOM_ID:
         print("CRITICAL ERROR: TOKEN or ROOM_ID not detected in environment variables.")
     else:
-        asyncio.run(__main__.main(MyBot, ROOM_ID, TOKEN))
+        asyncio.run(__main__.main(MyBot))
