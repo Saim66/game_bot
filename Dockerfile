@@ -1,17 +1,14 @@
-FROM python:3.10-slim
-
-# Prevents Python from writing pyc files to disc
-ENV PYTHONDONTWRITEBYTECODE=1
-# Prevents Python from buffering stdout and stderr
-ENV PYTHONUNBUFFERED=1
+# Use a newer Python version
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install dependencies first (faster builds)
+# Upgrade pip first to ensure it can find the latest packages
+RUN pip install --upgrade pip
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the code
 COPY . .
 
 CMD ["python", "main.py"]
